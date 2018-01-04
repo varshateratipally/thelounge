@@ -350,9 +350,10 @@ function initializeClient(socket, client, token, lastMessage) {
 			promises.push(packageManager.checkForUpdates());
 		}
 		Promise.all(promises)
-			.then(([changelogData, packageUpdates]) => {
+			.then((dataArray) => {
+				const changelogData = dataArray[0];
 				changelogData.packageUpdates = {
-					updatesAvailable: packageUpdates,
+					updatesAvailable: dataArray[1],
 				};
 				socket.emit("changelog", changelogData);
 			});
