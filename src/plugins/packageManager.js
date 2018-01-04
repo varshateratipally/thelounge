@@ -13,6 +13,7 @@ const packagesParent = path.dirname(packagesPath);
 module.exports = {
 	checkForUpdates,
 	install,
+	update,
 };
 
 function checkForUpdates() {
@@ -106,5 +107,33 @@ function install(packageName) {
 	}).catch((e) => {
 		log.error(`${e}`);
 		process.exit(1);
+	});
+}
+
+function update() {
+	return new Promise((res, rej) => {
+		const npm = child.spawn(
+			process.platform === "win32" ? "npm.cmd" : "npm",
+			[
+				"outdated",
+				"--production",
+				"--prefix",
+				packagesParent,
+			],
+			{
+				stdio: "inherit",
+			}
+		);
+
+		npm.on("close", (code) => {
+			if (code !== 0) {
+				log.error(`Failed to update packages. Exit code: ${code}`);
+				return;
+			}
+
+			log.info("Packages successfully updated.");
+		});
+
+		npm.on("error", rej);
 	});
 }
