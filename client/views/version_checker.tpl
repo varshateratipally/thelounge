@@ -14,7 +14,12 @@
 	</p>
 {{else equal status "up-to-date"}}
 	<p>
-		The Lounge is up to date!
+		The Lounge is up to date
+		{{#equal packageStatus "package-updates"}}
+			, but there are updates to your packages.
+		{{else}}
+			!
+        {{/equal}}
 	</p>
 
 	<button id="check-now" class="btn btn-small">Check now</button>

@@ -2,18 +2,48 @@
 const Helper = require("../helper");
 const colors = require("colors/safe");
 const log = require("../log.js");
+const fs = require("fs");
+const fsextra = require("fs-extra");
+const path = require("path");
+const child = require("child_process");
+const packageJson = require("package-json");
+const packagesPath = Helper.getPackagesPath();
+const packagesParent = path.dirname(packagesPath);
 
 module.exports = {
+	checkForUpdates,
 	install,
 };
 
-function install(packageName) {
-	const fs = require("fs");
-	const fsextra = require("fs-extra");
-	const path = require("path");
-	const child = require("child_process");
-	const packageJson = require("package-json");
+function checkForUpdates() {
+	return new Promise((res, rej) => {
+		const npm = child.spawn(
+			process.platform === "win32" ? "npm.cmd" : "npm",
+			[
+				"outdated",
+				"--prefix",
+				packagesParent,
+			],
+			{
+				stdio: "inherit",
+			}
+		);
 
+		npm.on("close", (code) => {
+			if (code !== 0) {
+				log.info("Outdated packages installed");
+				res(true);
+			} else {
+				log.info("Packages up to date");
+				res(false);
+			}
+		});
+
+		npm.on("error", rej);
+	});
+}
+
+function install(packageName) {
 	if (!fs.existsSync(Helper.getConfigPath())) {
 		log.error(`${Helper.getConfigPath()} does not exist.`);
 		return;
@@ -32,8 +62,6 @@ function install(packageName) {
 
 		log.info(`Installing ${colors.green(packageName)}...`);
 
-		const packagesPath = Helper.getPackagesPath();
-		const packagesParent = path.dirname(packagesPath);
 		const packagesConfig = path.join(packagesParent, "package.json");
 
 		// Create node_modules folder, otherwise npm will start walking upwards to find one

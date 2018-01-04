@@ -15,6 +15,7 @@ const net = require("net");
 const Identification = require("./identification");
 const themes = require("./plugins/themes");
 const changelog = require("./plugins/changelog");
+const packageManager = require("./plugins/packageManager");
 
 // The order defined the priority: the first available plugin is used
 // ALways keep local auth in the end, which should always be enabled.
@@ -344,9 +345,17 @@ function initializeClient(socket, client, token, lastMessage) {
 	);
 
 	socket.on("changelog", function() {
-		changelog.fetch((data) => {
-			socket.emit("changelog", data);
-		});
+		const promises = [changelog.fetch()];
+		if (client.config.role === "admin") {
+			promises.push(packageManager.checkForUpdates());
+		}
+		Promise.all(promises)
+			.then(([changelogData, packageUpdates]) => {
+				changelogData.packageUpdates = {
+					updatesAvailable: packageUpdates,
+				};
+				socket.emit("changelog", changelogData);
+			});
 	});
 
 	socket.on("msg:preview:toggle", function(data) {
@@ -450,6 +459,10 @@ function initializeClient(socket, client, token, lastMessage) {
 			active: client.lastActiveChannel,
 			networks: client.networks.map((network) => network.getFilteredClone(client.lastActiveChannel, lastMessage)),
 			token: tokenToSend,
+			user: _.pick(client.config, [
+				"user",
+				"role",
+			]),
 		});
 	};
 

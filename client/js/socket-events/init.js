@@ -8,9 +8,11 @@ const webpush = require("../webpush");
 const sidebar = $("#sidebar");
 const storage = require("../localStorage");
 const utils = require("../utils");
+const $body = $("body");
 
 socket.on("init", function(data) {
 	$("#loading-page-message, #connection-error").text("Rendering…");
+	$body.data("user", data.user);
 
 	const lastMessageId = utils.lastMessageId;
 	let previousActive = 0;
@@ -41,7 +43,7 @@ socket.on("init", function(data) {
 
 		webpush.configurePushNotifications(data.pushSubscription, data.applicationServerKey);
 
-		$("body").removeClass("signed-out");
+		$body.removeClass("signed-out");
 		$("#loading").remove();
 		$("#sign-in").remove();
 

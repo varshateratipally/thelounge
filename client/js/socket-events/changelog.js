@@ -29,7 +29,7 @@ socket.on("changelog", function(data) {
 	links.has("img").addClass("toggle-thumbnail");
 
 	// 2. Version checker visible in Help window
-	let status;
+	let status, packageStatus;
 
 	if (data.latest) {
 		status = "new-version";
@@ -39,9 +39,14 @@ socket.on("changelog", function(data) {
 		status = "error";
 	}
 
+	if (data.packageUpdates.updatesAvailable && $("body").data("user").role === "admin") {
+		packageStatus = "package-updates";
+	}
+
 	renderVersionChecker({
 		latest: data.latest,
 		status,
+		packageStatus,
 	});
 
 	// When there is a button to refresh the checker available, display it when
@@ -63,7 +68,7 @@ $("#help").on("click", "#check-now", () => {
 
 // Given a status and latest release information, update the version checker
 // (CSS class and content)
-function renderVersionChecker({status, latest}) {
-	$("#version-checker").attr("class", status)
-		.html(templates.version_checker({latest, status}));
+function renderVersionChecker({status, packageStatus = "", latest}) {
+	$("#version-checker").attr("class", `${status} ${packageStatus}`)
+		.html(templates.version_checker({latest, status, packageStatus}));
 }

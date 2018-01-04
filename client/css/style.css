@@ -1673,11 +1673,6 @@ part/quit messages where we don't load previews (adds a blank line otherwise) */
 	content: "\f250"; /* http://fontawesome.io/icon/hourglass-o/ */
 }
 
-#version-checker.new-version {
-	color: #8a6d3b;
-	background-color: #fcf8e3;
-}
-
 #version-checker.new-version::before {
 	content: "\f087"; /* http://fontawesome.io/icon/thumbs-o-up/ */
 }
@@ -1694,6 +1689,12 @@ part/quit messages where we don't load previews (adds a blank line otherwise) */
 #version-checker.up-to-date {
 	background-color: #dff0d8;
 	color: #3c763d;
+}
+
+#version-checker.new-version,
+#version-checker.package-updates {
+	color: #8a6d3b;
+	background-color: #fcf8e3;
 }
 
 #version-checker.up-to-date #check-now {
