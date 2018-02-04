@@ -239,6 +239,7 @@ kbd {
 #chat .nick .from::before,
 #chat .action .from::before,
 #chat .toggle-button::after,
+#chat .scroll-down::after,
 #version-checker::before,
 .context-menu-item::before,
 #help .website-link::before,
@@ -1036,6 +1037,35 @@ kbd {
 
 #chat .show-more-button:hover {
 	opacity: 1;
+}
+
+#chat .scroll-down {
+	position: absolute;
+	display: block;
+	width: 48px;
+	height: 48px;
+	line-height: 48px;
+	border-radius: 50%;
+	color: #fff;
+	background: #414c5e;
+	text-align: center;
+	bottom: 16px;
+	right: 196px;
+	z-index: 2;
+	transition: right 0.4s;
+	cursor: pointer;
+}
+
+#chat .scroll-down:hover {
+	opacity: 0.8;
+}
+
+#chat .scroll-down::after {
+	content: "\f063"; /* http://fontawesome.io/icon/arrow-down/ */
+}
+
+#viewport.rt #chat .scroll-down {
+	right: 16px;
 }
 
 #chat .messages {

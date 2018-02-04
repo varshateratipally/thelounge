@@ -463,6 +463,10 @@ $(function() {
 	$("#help").on("click", "#view-changelog, #back-to-help", openWindow);
 	$("#changelog").on("click", "#back-to-help", openWindow);
 
+	chat.on("click", ".scroll-down", function() {
+		$(this).parent().find(".chat").scrollBottom();
+	});
+
 	sidebar.on("click", "#sign-out", function() {
 		socket.emit("sign-out");
 		storage.remove("token");
