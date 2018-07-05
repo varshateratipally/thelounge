@@ -71,7 +71,7 @@ a {
 }
 
 a:hover {
-	text-decoration: none;
+	text-decoration: underline;
 	opacity: 0.8;
 }
 
@@ -1232,6 +1232,7 @@ background on hover (unless active) */
 
 .chat .user:hover,
 .inline-channel:hover {
+	text-decoration: underline dashed;
 	opacity: 0.6;
 }
 
