@@ -5,7 +5,6 @@ const templates = require("../views");
 const options = require("./options");
 const renderPreview = require("./renderPreview");
 const utils = require("./utils");
-const sorting = require("./sorting");
 const constants = require("./constants");
 const condensed = require("./condensed");
 const JoinChannel = require("./join-channel");
@@ -212,13 +211,6 @@ function renderChannelUsers(data) {
 function renderNetworks(data, singleNetwork) {
 	const collapsed = new Set(JSON.parse(storage.get("thelounge.networks.collapsed")));
 
-	sidebar.find(".empty").hide();
-	sidebar.find(".networks").append(
-		templates.network({
-			networks: data.networks,
-		}).trim()
-	);
-
 	// Add keyboard handlers to the "Join a channel…" form inputs/button
 	JoinChannel.handleKeybinds(data.networks);
 
@@ -284,7 +276,6 @@ function renderNetworks(data, singleNetwork) {
 	}
 
 	utils.confirmExit();
-	sorting();
 
 	if (sidebar.find(".highlight").length) {
 		utils.toggleNotificationMarkers(true);
