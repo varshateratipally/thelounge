@@ -11,6 +11,7 @@ const JoinChannel = require("./join-channel");
 const helpers_parse = require("./libs/handlebars/parse");
 const Userlist = require("./userlist");
 const storage = require("./localStorage");
+const {vueApp} = require("./vue");
 
 const chat = $("#chat");
 const sidebar = $("#sidebar");
@@ -277,8 +278,14 @@ function renderNetworks(data, singleNetwork) {
 
 	utils.confirmExit();
 
-	if (sidebar.find(".highlight").length) {
-		utils.toggleNotificationMarkers(true);
+	for (const network of vueApp.networks) {
+		for (const channel of network.channels) {
+			if (channel.highlight > 0) {
+				utils.updateTitle();
+				utils.toggleNotificationMarkers(true);
+				return;
+			}
+		}
 	}
 }
 
