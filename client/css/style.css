@@ -1190,16 +1190,6 @@ background on hover (unless active) */
 	overflow: hidden; /* Prevents Zalgo text to expand beyond messages */
 }
 
-#chat .special .time,
-#chat .special .from {
-	display: none;
-}
-
-#chat .special .date-marker-container,
-#chat .special .unread-marker {
-	display: none;
-}
-
 #chat .special table th {
 	word-break: normal;
 }
