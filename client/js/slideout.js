@@ -34,7 +34,7 @@ function onTouchStart(e) {
 
 	const touch = e.touches.item(0);
 
-	menuWidth = parseFloat(window.getComputedStyle(this.menu).width);
+	menuWidth = parseFloat(window.getComputedStyle(SlideoutMenu.menu).width);
 
 	if (!menuIsOpen || touch.screenX > menuWidth) {
 		touchStartPos = touch;
@@ -63,7 +63,7 @@ function onTouchMove(e) {
 		const devicePixelRatio = window.devicePixelRatio || 2;
 
 		if (Math.abs(distX) > devicePixelRatio) {
-			this.viewport.classList.toggle("menu-dragging", true);
+			SlideoutMenu.viewport.classList.toggle("menu-dragging", true);
 			menuIsMoving = true;
 		}
 	}
@@ -78,8 +78,8 @@ function onTouchMove(e) {
 		distX = 0;
 	}
 
-	this.menu.style.transform = "translate3d(" + distX + "px, 0, 0)";
-	this.sidebarOverlay.style.opacity = distX / menuWidth;
+	SlideoutMenu.menu.style.transform = "translate3d(" + distX + "px, 0, 0)";
+	SlideoutMenu.sidebarOverlay.style.opacity = distX / menuWidth;
 }
 
 function onTouchEnd() {
@@ -92,9 +92,9 @@ function onTouchEnd() {
 
 	document.body.removeEventListener("touchmove", onTouchMove);
 	document.body.removeEventListener("touchend", onTouchEnd);
-	this.viewport.classList.toggle("menu-dragging", false);
-	this.menu.style.transform = null;
-	this.sidebarOverlay.style.opacity = null;
+	SlideoutMenu.viewport.classList.toggle("menu-dragging", false);
+	SlideoutMenu.menu.style.transform = null;
+	SlideoutMenu.sidebarOverlay.style.opacity = null;
 
 	touchStartPos = null;
 	touchCurPos = null;
