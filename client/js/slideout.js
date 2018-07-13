@@ -1,5 +1,9 @@
 "use strict";
 
+const viewport = document.getElementById("viewport");
+const menu = document.getElementById("sidebar");
+const sidebarOverlay = document.getElementById("sidebar-overlay");
+
 let touchStartPos = null;
 let touchCurPos = null;
 let touchStartTime = 0;
@@ -9,16 +13,12 @@ let menuIsMoving = false;
 
 class SlideoutMenu {
 	static enable() {
-		this.viewport = document.getElementById("viewport");
-		this.menu = document.getElementById("sidebar");
-		this.sidebarOverlay = document.getElementById("sidebar-overlay");
-
 		document.body.addEventListener("touchstart", onTouchStart, {passive: true});
 	}
 
 	static toggle(state) {
 		menuIsOpen = state;
-		this.viewport.classList.toggle("menu-open", state);
+		viewport.classList.toggle("menu-open", state);
 	}
 
 	static isOpen() {
@@ -34,7 +34,7 @@ function onTouchStart(e) {
 
 	const touch = e.touches.item(0);
 
-	menuWidth = parseFloat(window.getComputedStyle(SlideoutMenu.menu).width);
+	menuWidth = parseFloat(window.getComputedStyle(menu).width);
 
 	if (!menuIsOpen || touch.screenX > menuWidth) {
 		touchStartPos = touch;
@@ -63,7 +63,7 @@ function onTouchMove(e) {
 		const devicePixelRatio = window.devicePixelRatio || 2;
 
 		if (Math.abs(distX) > devicePixelRatio) {
-			SlideoutMenu.viewport.classList.toggle("menu-dragging", true);
+			viewport.classList.toggle("menu-dragging", true);
 			menuIsMoving = true;
 		}
 	}
@@ -78,8 +78,8 @@ function onTouchMove(e) {
 		distX = 0;
 	}
 
-	SlideoutMenu.menu.style.transform = "translate3d(" + distX + "px, 0, 0)";
-	SlideoutMenu.sidebarOverlay.style.opacity = distX / menuWidth;
+	menu.style.transform = "translate3d(" + distX + "px, 0, 0)";
+	sidebarOverlay.style.opacity = distX / menuWidth;
 }
 
 function onTouchEnd() {
@@ -92,9 +92,9 @@ function onTouchEnd() {
 
 	document.body.removeEventListener("touchmove", onTouchMove);
 	document.body.removeEventListener("touchend", onTouchEnd);
-	SlideoutMenu.viewport.classList.toggle("menu-dragging", false);
-	SlideoutMenu.menu.style.transform = null;
-	SlideoutMenu.sidebarOverlay.style.opacity = null;
+	viewport.classList.toggle("menu-dragging", false);
+	menu.style.transform = null;
+	sidebarOverlay.style.opacity = null;
 
 	touchStartPos = null;
 	touchCurPos = null;
