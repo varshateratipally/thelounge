@@ -15,7 +15,7 @@ request.get({
 	for (const key in emojiStrategy) {
 		if (emojiStrategy.hasOwnProperty(key)) {
 			const shortname = prepareShortName(emojiStrategy[key].shortname);
-			const unicode = stringToUnicode(emojiStrategy[key].unicode_output);
+			const unicode = stringToUnicode(emojiStrategy[key].unicode_output || `${key}-FE0F`);
 			fullNameEmojiMap[unicode] = emojiStrategy[key].name;
 
 			// Skip tones, at least for now
